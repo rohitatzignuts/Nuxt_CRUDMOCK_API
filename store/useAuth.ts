@@ -6,6 +6,7 @@ import Swal from "sweetalert2";
 
 export const useAuthStore = defineStore("auth", () => {
     const token = ref<string | null>(null);
+    const router = useRouter();
     const loginData = ref<UserLogin>({
         email: "",
         password: "",
@@ -18,6 +19,7 @@ export const useAuthStore = defineStore("auth", () => {
         password_confirmation: "",
     });
 
+    // handle user registration
     const handleRegister = () => {
         axios
             .post("api/register", registerData.value)
@@ -26,61 +28,134 @@ export const useAuthStore = defineStore("auth", () => {
                     localStorage.setItem("token", response.data.token);
                 }
                 Swal.fire({
-                    icon: 'success',
-                    title: 'User Registered successfully!',
+                    icon: "success",
+                    title: "User Registered successfully!",
                     showConfirmButton: false,
-                    timer: 1500
+                    timer: 1500,
                 });
+                router.push({ path: "/" });
                 registerData.value.name = "";
                 registerData.value.email = "";
                 registerData.value.password = "";
                 registerData.value.password_confirmation = "";
                 return response;
             })
-            .catch((error: any) => {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'An Error Occurred!',
-                    showConfirmButton: false,
-                    timer: 1500
-                });
-                return error;
+            .catch((error) => {
+                if (error.response && error.response.data && error.response.data.errors) {
+                    let errorMessage = '' 
+                    for (let key in error.response.data.errors) {
+                        errorMessage += error.response.data.errors[key][0] + "\n";
+                    }
+                    Swal.fire({
+                        icon: "error",
+                        text: errorMessage,
+                        showConfirmButton: false,
+                        timer: 2000,
+                    });
+                } else {
+                    Swal.fire({
+                        icon: "error",
+                        title: "An Error Occurred!",
+                        showConfirmButton: false,
+                        timer: 1500,
+                    });
+                }
             });
     };
 
+    // handle user login
     const handleLogin = () => {
         axios
             .post("api/login", loginData.value)
             .then((response: any) => {
                 if (response.data && response.data.token) {
                     localStorage.setItem("token", response.data.token);
+                    router.push({ path: "/" });
                     Swal.fire({
-                        icon: 'success',
-                        title: 'Logged in successfully!',
+                        icon: "success",
+                        title: "Logged in successfully!",
                         showConfirmButton: false,
-                        timer: 1000
-                    })
+                        timer: 1000,
+                    });
                     loginData.value.email = "";
                     loginData.value.password = "";
-                } else {
-                    alert("error");
                 }
             })
-            .catch((error: any) => {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Invalid password or email!',
-                    showConfirmButton: false,
-                    timer: 1500
-                })
-                return error;
+            .catch((error) => {
+                if (error.response) {
+                    Swal.fire({
+                        icon: "error",
+                        title: error.response.data.error,
+                        showConfirmButton: false,
+                        timer: 1500,
+                    });
+                } else {
+                    Swal.fire({
+                        icon: "error",
+                        title: "An Error Occurred!",
+                        showConfirmButton: false,
+                        timer: 1500,
+                    });
+                }
             });
     };
+
+    // handle user logout
+    const handleLogout = () => {
+        const token = localStorage.getItem("token");
+        Swal.fire({
+            title: "Are you sure?",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes !",
+        }).then((result) => {
+            if (result.isConfirmed) {
+                axios
+                    .post("api/logout", null, {
+                        headers: {
+                            Authorization: `Bearer ${token}`,
+                        },
+                    })
+                    .then((response: any) => {
+                        Swal.fire({
+                            icon: "success",
+                            title: "Logged out successfully!",
+                            showConfirmButton: false,
+                            timer: 1500,
+                        });
+                        router.push({ path: "/login" });
+                        localStorage.removeItem("token");
+                        return response;
+                    })
+                    .catch((error) => {
+                        if (error.response) {
+                            Swal.fire({
+                                icon: "error",
+                                title: error.response.data.error,
+                                showConfirmButton: false,
+                                timer: 1500,
+                            });
+                        } else {
+                            Swal.fire({
+                                icon: "error",
+                                title: "An Error Occurred!",
+                                showConfirmButton: false,
+                                timer: 1500,
+                            });
+                        }
+                    });
+            }
+        });
+    };
+
     return {
         registerData,
         handleRegister,
         loginData,
         handleLogin,
+        handleLogout,
         token,
     };
 });

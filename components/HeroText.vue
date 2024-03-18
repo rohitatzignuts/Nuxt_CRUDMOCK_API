@@ -1,9 +1,10 @@
 <script setup lang="ts">
-const tab = ref(null)
+import { ref } from "vue";
+const tab = ref<string | null>(null);
 </script>
 
 <template>
-    <div>
+    <div class="mb-8 pb-2">
         <div>
             <p class="text-h3 py-4">Welcome to ProjectMaker!</p>
         </div>

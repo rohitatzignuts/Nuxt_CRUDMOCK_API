@@ -12,9 +12,14 @@ export const useProjectsStore = defineStore("projects", () => {
         projectDescription: ""
     });
 
+    // clear project values
     const clearProjectValue = () => {
-        project.value = {}
+        project.value = {
+            projectName: "",
+            projectDescription: ""
+        }
     }
+
     // fetch the projects
     const fetchProjects = () => {
         axios
@@ -38,6 +43,7 @@ export const useProjectsStore = defineStore("projects", () => {
             });
             return;
         }
+        // switch HTTP methods according to the project id 
         const method = projectId.value ? "patch" : "post";
         const url = projectId.value
             ? `/api/projects/${projectId.value}`
@@ -58,19 +64,26 @@ export const useProjectsStore = defineStore("projects", () => {
                 project.value.projectDescription = "";
             })
             .catch((error) => {
-                Swal.fire({
-                    icon: "error",
-                    title: "An Error Occurred!",
-                    showConfirmButton: false,
-                    timer: 1500,
-                });
-                return error;
+                if (error.response) {
+                    Swal.fire({
+                        icon: "error",
+                        title: error.response.data.message,
+                        showConfirmButton: false,
+                        timer: 1500,
+                    });
+                } else {
+                    Swal.fire({
+                        icon: "error",
+                        title: "An Error Occurred!",
+                        showConfirmButton: false,
+                        timer: 1500,
+                    });
+                }
             });
     };
 
     // get data of the selected project
     const getProject = (id: string) => {
-        // Use the provided ID instead of router.params.id
         projectId.value = id;
         if (projectId.value) {
             axios
@@ -115,13 +128,13 @@ export const useProjectsStore = defineStore("projects", () => {
                         });
                         fetchProjects();
                     })
-                    .catch(() => {
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'An Error Occurred!',
-                            showConfirmButton: false,
-                            timer: 500
-                        });
+                    .catch((error) => {
+                            Swal.fire({
+                                icon: "error",
+                                title: "An Error Occurred!",
+                                showConfirmButton: false,
+                                timer: 1500,
+                            });
                     });
             }
         });
