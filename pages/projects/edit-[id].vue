@@ -12,7 +12,7 @@ if (projectId) {
 const goBack = () => {
     store.clearProjectValue();
     router.back();
-};
+}
 </script>
 
 <template>

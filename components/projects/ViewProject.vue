@@ -2,7 +2,7 @@
 import type { Project } from '~/types/projectTypes';
 
 const emit = defineEmits<{
-    (event : 'handleCloseDialog' , payload : boolean) : void
+    (event: 'handleCloseDialog', payload: boolean): void
 }>()
 
 defineProps<{

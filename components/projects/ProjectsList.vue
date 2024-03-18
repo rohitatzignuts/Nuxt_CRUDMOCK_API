@@ -23,7 +23,7 @@ onMounted(() => {
 
 <template>
     <div>
-        <VCard title="Projects" flat class="mt-4" width="100%" color="#31304D">
+        <VCard :title="$t('Projects')" flat class="mt-4" width="100%" color="#31304D">
             <template v-slot:text>
                 <vTextField v-model="search" label="Search" prepend-inner-icon="mdi-magnify" variant="outlined"
                     hide-details single-line></vTextField>

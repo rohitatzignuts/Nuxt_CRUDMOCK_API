@@ -1,18 +1,19 @@
 <script setup lang="ts">
 import { ref } from "vue";
 const tab = ref<string | null>(null);
+
 </script>
 
 <template>
     <div class="mb-8 pb-2">
         <div>
-            <p class="text-h3 py-4">Welcome to ProjectMaker!</p>
+            <p class="text-h3 py-4">{{$t('Welcome to ProjectMaker!')}}</p>
         </div>
         <VCard class="mt-4">
             <VTabs v-model="tab" bg-color="#B6BBC4">
-                <VTab value="one">Create</VTab>
-                <VTab value="two">Visualize</VTab>
-                <VTab value="three">Edit & Delete</VTab>
+                <VTab value="one">{{$t('Create')}}</VTab>
+                <VTab value="two">{{$t('Visualize')}}</VTab>
+                <VTab value="three">{{$t('Edit & Delete')}}</VTab>
             </VTabs>
             <VCardText>
                 <VWindow v-model="tab">

@@ -8,7 +8,7 @@ defineProps<{
 </script>
 
 <template>
-    <h1 class="mb-4">{{ projectId ? 'Editing a Project' : 'Creating a Project' }}</h1>
+    <h1 class="mb-4">{{ projectId ? `${$t('Editing a Project')}` : `${$t('Creating a Project')}` }}</h1>
     <VDivider class="my-4" />
     <form @submit.prevent="store.saveProject">
         <VTextField v-model="store.project.projectName" label="Title" type="text"></VTextField>

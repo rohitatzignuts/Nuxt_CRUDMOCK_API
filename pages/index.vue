@@ -7,8 +7,8 @@
         <main class="mt-4">
             <div>
                 <NuxtLink to="projects/create" class="text-decoration-none">
-                    <VBtn class="text-none" color="grey-lighten-3" size="x-large" variant="flat" block>Let's Create A
-                        Project</VBtn>
+                    <VBtn class="text-none" color="grey-lighten-3" size="x-large" variant="flat" block>
+                        {{$t("Let's Create a Project")}}</VBtn>
                 </NuxtLink>
             </div>
             <ProjectsList />
