@@ -2,11 +2,12 @@ import { defineStore } from "pinia";
 import Swal from "sweetalert2";
 import { ref } from "vue";
 import axios from "axios";
+import type { Project } from '~/types/projectTypes';
 
 export const useProjectsStore = defineStore("projects", () => {
     const router = useRouter();
-    const projects = ref([]);
-    const projectId = ref(null);
+    const projects = ref<Array<Project>>([]);
+    const projectId = ref<string | number>(null);
     const project = ref({
         projectName: "",
         projectDescription: ""
