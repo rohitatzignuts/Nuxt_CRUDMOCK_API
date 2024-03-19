@@ -1,23 +1,25 @@
 <script lang="ts" setup>
 import { useProjectsStore } from '~/store/useProjects';
-
+import {requiredValidator, projectValueValidator } from '~/validation'
 const store = useProjectsStore()
 defineProps<{
-    projectId? : string
+    projectId?: string
 }>()
 </script>
 
 <template>
     <h1 class="mb-4">{{ projectId ? `${$t('Editing a Project')}` : `${$t('Creating a Project')}` }}</h1>
     <VDivider class="my-4" />
-    <form @submit.prevent="store.saveProject">
-        <VTextField v-model="store.project.projectName" label="Title" type="text"></VTextField>
-        <VTextarea v-model="store.project.projectDescription" label="Discription"></VTextarea>
+    <VForm @submit.prevent="store.saveProject" rules="projectDataRule">
+        <VTextField v-model="store.project.projectName" label="projectName" type="text" :rules="[requiredValidator,projectValueValidator]"
+            class="mb-2"></VTextField>
+        <VTextarea v-model="store.project.projectDescription" label="projectDiscription" :rules="[requiredValidator,projectValueValidator]"
+            class="mb-2"></VTextarea>
         <VBtn class="me-4" type="submit">
             submit
         </VBtn>
         <VBtn @click="store.clearProjectValue" variant="outlined">
             clear
         </VBtn>
-    </form>
+    </VForm>
 </template>
