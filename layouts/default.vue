@@ -1,28 +1,41 @@
 <script setup lang="ts">
 import { useAuthStore } from '~/store/useAuth';
 const store = useAuthStore()
-
 </script>
 
 <template>
     <VLayout class="rounded rounded-md px-15" style="background-color: #161A30;color:#fff">
         <VAppBar color="#31304D" title="CRUD_MOCK API" class="px-13">
             <NuxtLink to="/" class="me-2">
-                <VBtn variant="tonal">{{$t('Home')}}</VBtn>
+                <VBtn variant="tonal">
+                    <VIcon>mdi-home</VIcon>
+                    <VTooltip activator="parent" location="bottom">Home</VTooltip>
+                </VBtn>
             </NuxtLink>
-            <VBtn variant="tonal" @click="store.handleLogout">{{$t('Logout')}}</VBtn>
-            <VBtn variant="tonal" class="ms-2 pa-0">
+            <VBtn variant="tonal" class="me-2 pa-0">
                 <select id="locale-select" v-model="$i18n.locale">
-                    <option value="en" selected>en</option>
+                    <option value="en">en</option>
                     <option value="ja">ja</option>
                 </select>
+                <VTooltip activator="parent" location="bottom">Language</VTooltip>
             </VBtn>
+            <VBtn variant="tonal" @click="store.handleLogout" color="#fff">
+                <VIcon>mdi-logout</VIcon>
+                <VTooltip activator="parent" location="bottom">Logout</VTooltip>
+            </VBtn>
+            <NuxtLink to="/dropzone" class="ms-2">
+                <VBtn variant="tonal">
+                    <VIcon>mdi-select-drag</VIcon>
+                </VBtn>
+                <VTooltip activator="parent" location="bottom">DropZone</VTooltip>
+            </NuxtLink>
+
         </VAppBar>
         <VMain class="mx-auto my-5" width="w-75" style="min-height: 100vh;">
             <slot />
         </VMain>
     </VLayout>
-</template> 
+</template>
 
 <style scoped>
 a{
