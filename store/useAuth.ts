@@ -19,6 +19,23 @@ export const useAuthStore = defineStore("auth", () => {
         password_confirmation: "",
     });
 
+    // clear login data
+    const clearLoginData = () => {
+        loginData.value = {
+            email: "",
+            password: "",
+        };
+    }
+
+    // clear registration data
+    const clearRegisterData = () => {
+        registerData.value = {
+            name: "",
+            email: "",
+            password: "",
+            password_confirmation: "",
+        };
+    }
     // handle user registration
     const handleRegister = async () => {
         try {
@@ -114,13 +131,13 @@ export const useAuthStore = defineStore("auth", () => {
                         Authorization: `Bearer ${token}`,
                     },
                 });
+                router.push({ path: "/login" });
                 Swal.fire({
                     icon: "success",
                     title: "Logged out successfully!",
                     showConfirmButton: false,
                     timer: 1500,
                 });
-                router.push({ path: "/login" });
                 localStorage.removeItem("token");
                 return response;
             } catch (error) {
@@ -150,5 +167,7 @@ export const useAuthStore = defineStore("auth", () => {
         handleLogin,
         handleLogout,
         token,
+        clearRegisterData,
+        clearLoginData
     };
 });
