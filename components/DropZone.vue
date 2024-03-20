@@ -1,18 +1,3 @@
-<template>
-    <div>
-        <VBtn @click="clearFile" variant="tonal" v-if="file" class="my-4">Clear</VBtn>
-        <div class="dropzone" @dragover.prevent @drop.prevent="handleDrop">
-            <div v-if="!file" @click="handleClick">Drag & drop files here </div>
-            <div v-else>
-                <VSheet>file Name : {{ file.name }}</VSheet>
-                <div v-if="fileData">
-                    <img v-if="isImage" :src="fileData" alt="Uploaded Image" />
-                </div>
-            </div>
-        </div>
-    </div>
-</template>
-
 <script setup lang="ts">
 import { ref } from 'vue';
 
@@ -57,6 +42,21 @@ const clearFile = () => {
 const isImage = computed(() => fileData.value?.startsWith('data:image'));
 </script>
 
+<template>
+    <div>
+        <VBtn @click="clearFile" variant="tonal" v-if="file" class="my-4">Clear</VBtn>
+        <div class="dropzone" @dragover.prevent @drop.prevent="handleDrop">
+            <div v-if="!file" @click="handleClick">Drag & drop files here </div>
+            <div v-else>
+                <VSheet>file Name : {{ file.name }}</VSheet>
+                <div v-if="fileData">
+                    <img v-if="isImage" :src="fileData" alt="Uploaded Image" />
+                </div>
+            </div>
+        </div>
+    </div>
+</template>
+
 <style scoped>
 .dropzone {
     border: 2px dashed #ccc;
@@ -69,8 +69,6 @@ const isImage = computed(() => fileData.value?.startsWith('data:image'));
     text-align: center;
 }
 img{
-    object-fit: cover;
     max-width: 100%;
-    overflow: hidden;
 }
 </style>
