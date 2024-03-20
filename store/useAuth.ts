@@ -5,13 +5,12 @@ import type { UserLogin, User } from "~/types/userTypes";
 import Swal from "sweetalert2";
 
 export const useAuthStore = defineStore("auth", () => {
-    const token = ref<string | null>(null);
-    const router = useRouter();
     const loginData = ref<UserLogin>({
         email: "",
         password: "",
     });
 
+    // clear register form fields
     const registerData = ref<User>({
         name: "",
         email: "",
@@ -19,15 +18,18 @@ export const useAuthStore = defineStore("auth", () => {
         password_confirmation: "",
     });
 
-    // clear login data
+    const token = ref<string | null>(null);
+    const router = useRouter();
+
+    // clear login form fields
     const clearLoginData = () => {
         loginData.value = {
             email: "",
             password: "",
         };
-    }
+    };
 
-    // clear registration data
+    // clear registration form fields
     const clearRegisterData = () => {
         registerData.value = {
             name: "",
@@ -35,11 +37,13 @@ export const useAuthStore = defineStore("auth", () => {
             password: "",
             password_confirmation: "",
         };
-    }
+    };
+
     // handle user registration
     const handleRegister = async () => {
         try {
             const response = await axios.post("api/register", registerData.value);
+            // check for token in response and store token in localStorage 
             if (response.data && response.data.token) {
                 localStorage.setItem("token", response.data.token);
             }
@@ -55,9 +59,11 @@ export const useAuthStore = defineStore("auth", () => {
             registerData.value.password = "";
             registerData.value.password_confirmation = "";
             return response;
-        } catch (error) {
+        } catch (error : any) {
+            // check for error messages in the response
             if (error.response && error.response.data && error.response.data.errors) {
-                let errorMessage = '' 
+                let errorMessage = "";
+                // assign error messages to a variable
                 for (let key in error.response.data.errors) {
                     errorMessage += error.response.data.errors[key][0] + "\n";
                 }
@@ -82,6 +88,7 @@ export const useAuthStore = defineStore("auth", () => {
     const handleLogin = async () => {
         try {
             const response = await axios.post("api/login", loginData.value);
+            // check for token in response and store token in localStorage 
             if (response.data && response.data.token) {
                 localStorage.setItem("token", response.data.token);
                 router.push({ path: "/" });
@@ -94,7 +101,8 @@ export const useAuthStore = defineStore("auth", () => {
                 loginData.value.email = "";
                 loginData.value.password = "";
             }
-        } catch (error) {
+        } catch (error : any) {
+            // check for error messages in the response
             if (error.response) {
                 Swal.fire({
                     icon: "error",
@@ -115,6 +123,7 @@ export const useAuthStore = defineStore("auth", () => {
 
     // handle user logout
     const handleLogout = async () => {
+        // get the token from localStorage 
         const token = localStorage.getItem("token");
         const result = await Swal.fire({
             title: "Are you sure?",
@@ -126,6 +135,7 @@ export const useAuthStore = defineStore("auth", () => {
         });
         if (result.isConfirmed) {
             try {
+                // send the token to the api endpoint for authentication
                 const response = await axios.post("api/logout", null, {
                     headers: {
                         Authorization: `Bearer ${token}`,
@@ -140,7 +150,8 @@ export const useAuthStore = defineStore("auth", () => {
                 });
                 localStorage.removeItem("token");
                 return response;
-            } catch (error) {
+            } catch (error : any) {
+                // check for error messages in the response
                 if (error.response) {
                     Swal.fire({
                         icon: "error",
@@ -168,6 +179,6 @@ export const useAuthStore = defineStore("auth", () => {
         handleLogout,
         token,
         clearRegisterData,
-        clearLoginData
+        clearLoginData,
     };
 });

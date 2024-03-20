@@ -4,12 +4,13 @@ const store = useAuthStore()
 </script>
 
 <template>
+    <!-- default layout for the website -->
     <VLayout class="rounded rounded-md px-15" style="background-color: #161A30;color:#fff">
+        <!-- navbar  -->
         <VAppBar color="#31304D" title="CRUD_MOCK API" class="px-13">
             <NuxtLink to="/" class="me-2">
                 <VBtn variant="tonal">
                     <VIcon>mdi-home</VIcon>
-                    <VTooltip activator="parent" location="bottom">Home</VTooltip>
                 </VBtn>
             </NuxtLink>
             <VBtn variant="tonal" class="me-2 pa-0">
@@ -17,20 +18,18 @@ const store = useAuthStore()
                     <option value="en">en</option>
                     <option value="ja">ja</option>
                 </select>
-                <VTooltip activator="parent" location="bottom">Language</VTooltip>
             </VBtn>
             <VBtn variant="tonal" @click="store.handleLogout" color="#fff">
                 <VIcon>mdi-logout</VIcon>
-                <VTooltip activator="parent" location="bottom">Logout</VTooltip>
             </VBtn>
             <NuxtLink to="/dropzone" class="ms-2">
                 <VBtn variant="tonal">
                     <VIcon>mdi-select-drag</VIcon>
                 </VBtn>
-                <VTooltip activator="parent" location="bottom">DropZone</VTooltip>
             </NuxtLink>
-
         </VAppBar>
+        <!-- navbar ends  -->
+        <!-- main content -->
         <VMain class="mx-auto my-5" width="w-75" style="min-height: 100vh;">
             <slot />
         </VMain>
@@ -38,13 +37,14 @@ const store = useAuthStore()
 </template>
 
 <style scoped>
-a{
+a {
     color: #fff;
     text-decoration: none;
 }
-select{
+
+select {
     text-align: center;
-    padding: 5px 7.5px ;
+    padding: 5px 7.5px;
     border-radius: 5px;
     color: #fff;
     background-color: transparent;

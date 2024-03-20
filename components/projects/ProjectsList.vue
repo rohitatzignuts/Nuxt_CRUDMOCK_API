@@ -2,20 +2,23 @@
 import { useProjectsStore } from "~/store/useProjects";
 import type { Project } from "~/types/projectTypes";
 
-const search = ref<any>("");
-const showDialog = ref<Boolean>(false);
-const projectData = ref<Project>(null);
 const headers = [
     { title: "Name", value: "name", sortable: true, width: "20%" },
     { title: "Description", value: "description", width: "50%" },
     { title: "Actions", value: "actions", width: "30%" },
 ];
+const search = ref<any>("");
+const showDialog = ref<Boolean>(false);
+const projectData = ref<Project>();
 const store = useProjectsStore();
 
-const handleProjectView = (project) => {
+// show dialog and assign projectData
+const handleProjectView = (project : Project) => {
     showDialog.value = true;
     projectData.value = project;
 };
+
+// get the projects as soon as componen mounts
 onMounted(() => {
     store.fetchProjects();
 });
@@ -28,6 +31,7 @@ onMounted(() => {
                 <vTextField v-model="search" label="Search" prepend-inner-icon="mdi-magnify" variant="outlined"
                     hide-details single-line></vTextField>
             </template>
+            <!--  project list in table form  -->
             <VDataTable :headers="headers" :items="store.projects" :search="search">
                 <template #item.actions="{ item }">
                     <VBtn color="#31304D" class="mx-2 my-2" @click="handleProjectView(item)">
@@ -45,5 +49,6 @@ onMounted(() => {
             </VDataTable>
         </VCard>
     </div>
+    <!-- dialog for project view -->
     <ProjectsViewProject :isVisible="showDialog" :project="projectData" @handleCloseDialog="showDialog = false" />
 </template>

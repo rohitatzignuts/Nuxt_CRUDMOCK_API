@@ -1,5 +1,6 @@
 import axios from "axios";
 
+// axios plugin 
 export default defineNuxtPlugin(async () => {
     const runtimeConfig = useRuntimeConfig()
     axios.defaults.baseURL = runtimeConfig.public.BASE_URL

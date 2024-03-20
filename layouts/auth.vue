@@ -1,4 +1,5 @@
 <template>
+    <!-- layout for login and sign up pages  -->
     <div>
         <main>
             <slot />

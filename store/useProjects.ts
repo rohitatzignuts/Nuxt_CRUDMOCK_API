@@ -7,13 +7,13 @@ import type { Project } from '~/types/projectTypes';
 export const useProjectsStore = defineStore("projects", () => {
     const router = useRouter();
     const projects = ref<Array<Project>>([]);
-    const projectId = ref<string | number>(null);
+    const projectId = ref<string | number>();
     const project = ref({
         projectName: "",
         projectDescription: ""
     });
 
-    // clear project values
+    // clear project form values
     const clearProjectValue = () => {
         project.value = {
             projectName: "",
@@ -92,7 +92,6 @@ export const useProjectsStore = defineStore("projects", () => {
                 cancelButtonColor: '#d33',
                 confirmButtonText: 'Yes, delete it!'
             });
-
             if (result.isConfirmed) {
                 await axios.delete(`/api/projects/${id}`);
                 Swal.fire({
