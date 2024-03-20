@@ -22,19 +22,18 @@ export const betweenValidator = (value: unknown, min: number, max: number) => {
   return (Number(min) <= valueAsNumber && Number(max) >= valueAsNumber) || `Enter number between ${min} and ${max}`
 }
 
-export const projectValueValidator = (value:unknown) => {
+export const projectValueValidator = (value:string) => {
   if(value.length >= 255){
     return 'Value must not exceed 255 characters'
   }
   return ''
 }
 
-export const validateConfirmPassword = (value: string, pass: string): string => {
-  if (value !== pass) {
-    return 'Passwords do not match';
-  }
-  return '';
+// 👉 Confirm Password Validator
+export const validateConfirmPassword = (value: string, pass: string) => {
+  return value === pass || 'Passwords do not match';
 };
+
 // 👉 IsEmpty
 export const isEmpty = (value: unknown): boolean => {
   if (value === null || value === undefined || value === '')
